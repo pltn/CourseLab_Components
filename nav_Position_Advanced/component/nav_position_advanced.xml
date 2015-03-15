@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+'*    nav_position_advanced.xml
+-->
+<params>
+  <object>
+    <format>2.0</format>
+    <label>Настраиваемый указатель позиции</label>
+    <description>Настраиваемый указатель позиции</description>
+    <width>200</width>
+    <height>20</height>
+  </object>
+  <page name="Параметры" w="220" h="164">
+    <param type="check" id="position_text_show" text="Текст" def="yes" x="10" y="7" w="60" h="13"/>
+    <param type="edit" id="position_text" text="" def="ПОЗИЦИЯ:" x="100" y="9" w="110" h="13"/>
+    <param type="check" id="position_divider_show" text="Разделитель" def="yes" x="10" y="24" w="60" h="13"/>
+    <param type="edit" id="position_divider" text="" def="/" x="100" y="25" w="110" h="13"/>
+    <param type="check" id="total_slides_show" text="Отображать общее число слайдов" def="yes" x="10" y="40" w="130" h="13"/>
+    <param type="check" id="last_slides_show" text="Отображать оставшееся число слайдов" def="no" x="10" y="56" w="147" h="13"/>
+    <param type="label" id="" text="Шрифт:" def="" x="10" y="73" w="90" h="13"/>
+    <param type="select" id="position_font" text="" def="Tahoma" x="100" y="72" w="110" h="13">
+      <items>
+        <item id="Arial" label="Arial"/>
+        <item id="Courier" label="Courier"/>
+        <item id="Tahoma" label="Tahoma"/>
+        <item id="Times" label="Times"/>
+        <item id="Verdana" label="Verdana"/>
+      </items>
+    </param>
+    <param type="label" id="" text="Размер шрифта:" def="" x="10" y="89" w="90" h="13"/>
+    <param type="edit" id="position_font_size" text="" def="11" x="100" y="88" w="20" h="13"/>
+    <param type="label" id="" text="пкс." def="" x="125" y="89" w="50" h="13"/>
+    <param type="label" id="" text="Жирность шрифта:" def="" x="10" y="105" w="90" h="13"/>
+    <param type="select" id="position_font_weight" text="" def="bold" x="100" y="104" w="110" h="13">
+      <items>
+        <item id="normal" label="Обычный"/>
+        <item id="bold" label="Жирный"/>
+      </items>
+    </param>
+    <param type="label" id="" text="Наклон шрифта:" def="" x="10" y="121" w="90" h="13"/>
+    <param type="select" id="position_font_style" text="" def="normal" x="100" y="120" w="110" h="13">
+      <items>
+        <item id="normal" label="Обычный"/>
+        <item id="italic" label="Курсив"/>
+      </items>
+    </param>
+    <param type="label" id="" text="Цвет шрифта:" def="" x="10" y="137" w="90" h="13"/>
+    <param type="color" id="position_font_color" text="" def="#000000" x="100" y="136" w="45" h="13"/>
+  </page>
+    <methods>
+      <method name="Constructor" label="Constructor" access="private">
+        <params>
+        </params>
+        <body>
+        <![CDATA[function Constructor(argobj)
+            {
+                if(argobj.pid==null) return false;
+                var oCurObj = document.getElementById(argobj.pid);
+                if(oCurObj==null) return false;
+                oCurObj.setAttribute("num","");
+                AddEvtHandler("EVENT_SLIDE_OPENED", "nav_position_advanced", argobj.pid);
+                return true;
+            }                                                                                                                                                                                                                                                                         ]]>
+        </body>
+      </method>
+      <method name="HandleEvt" label="HandleEvt" access="private">
+        <params>
+        </params>
+        <body>
+        <![CDATA[function HandleEvt(oEvtHandler)
+            {
+                var argobj = { pid: oEvtHandler.sTargetId };                
+                var oParams = g_oParams.selectSingleNode("./param[@objectid='" + argobj.pid + "']");
+                if(oParams==null) return false;
+                if(oEvtHandler.sTargetId==null) return false;
+                var oCurObj = document.getElementById(oEvtHandler.sTargetId);
+                if(oCurObj==null) return false;
+                switch (oEvtHandler.sEvt)
+                {
+                    case "EVENT_SLIDE_OPENED":
+                    {
+                        var sCurrentSlideId = g_oSlide.getAttribute("id");
+                        var oStructure = g_oSlides.selectSingleNode("//object[@type='nav_025_structure']");
+                        var bStructure = (oStructure!=null);
+                        var iCurrent = 0;
+                        var sCurrent = "";
+                        if(bStructure)
+                        {
+                            alert("Структура создана");
+                            var sStructureId = oStructure.getAttribute("id");
+                            var oStructureParams = g_oParams.selectSingleNode("./param[@objectid='" + sStructureId +  "']");
+                            if(oStructureParams==null) return false;
+                            var aChapters = oStructureParams.selectNodes("chapter_list/item");
+                            var aSlideStrip = new Array();
+                            var aChapterSlides;
+                            var iIndex = 1;
+                            for(var i=0; i<aChapters.length; i++)
+                            {
+                                sId = aChapters[i].selectSingleNode("chapter_title_slide").text;
+                                if(sId!="")
+                                {
+                                    aSlideStrip.push(sId);
+                                    if(sId==sCurrentSlideId) iCurrent = iIndex;
+                                    iIndex++;
+                                }
+                                aChapterSlides = aChapters[i].selectNodes("slide_list/item");
+                                for(var j=0; j<aChapterSlides.length; j++)
+                                {
+                                    sId = aChapterSlides[j]. selectSingleNode("slide_id").text;
+                                    if(sId!="")
+                                    {
+                                        aSlideStrip.push(sId);
+                                        if(sId==sCurrentSlideId) iCurrent = iIndex;
+                                        iIndex++;
+                                    }
+                                }
+                            }
+                            sTotal = aSlideStrip.length.toString();
+                            sCurrent = iCurrent.toString();
+                            oCurObj.setAttribute("num", sCurrent);
+                            document.getElementById(oEvtHandler.sTargetId + "_position_total").innerHTML = sTotal;
+                            document.getElementById(oEvtHandler.sTargetId + "_position_current").innerHTML = sCurrent + " ";
+                        }
+                        else
+                        {
+                            var lss = oParams.selectSingleNode("last_slides_show").text=="yes"
+                            alert(lss)
+                            var aSlides = g_oSlides.selectNodes("slide");
+                            sTotal = aSlides.length.toString();
+                            document.getElementById(oEvtHandler.sTargetId + "_position_total").innerHTML = sTotal;
+                            for(var i=0; i<aSlides.length; i++)
+                            {
+                                iCurrent++;
+                                var oSlide = aSlides[i];
+                                if(oSlide.getAttribute("id")==sCurrentSlideId) break;
+                            }
+                            lss == true ? sCurrent = String(parseInt(sTotal)-iCurrent) : sCurrent = iCurrent.toString();
+                            oCurObj.setAttribute("num", sCurrent);
+                            document.getElementById(oEvtHandler.sTargetId + "_position_current").innerHTML = sCurrent + " ";
+                        }
+                        break;
+                    }
+                }
+                return true;
+            }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ]]>
+        </body>
+      </method>
+      <method name="GetProperty" label="GetProperty" access="private">
+        <params>
+        </params>
+        <body>
+        <![CDATA[function GetProperty(argobj)
+            {
+                if(argobj.pid==null || argobj.property==null) return false;
+                var oCurObj = document.getElementById(argobj.pid);
+                if(oCurObj==null) return false;
+                switch(argobj.property.toLowerCase())
+                {
+                    case "currentposition":        g_vPropertyValue = oCurObj.getAttribute("num");        break;
+                    default: return true;
+                }
+                return true;
+            }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ]]>
+        </body>
+      </method>
+    </methods>
+</params>
