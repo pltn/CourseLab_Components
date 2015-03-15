@@ -36,11 +36,8 @@
                 <span>
                     <xsl:attribute name="id"><xsl:value-of select="$objectID"/>_position_current</xsl:attribute>
                     <xsl:attribute name="style">font-family: <xsl:value-of select="position_font"/>; color: <xsl:value-of select="position_font_color"/>; font-weight: <xsl:value-of select="position_font_weight"/>; font-style: <xsl:value-of select="position_font_style"/>; font-size: <xsl:value-of select="position_font_size"/>px;</xsl:attribute>
-                    1
-                </span>
-                <span>
-                    <xsl:attribute name="style">font-family: <xsl:value-of select="position_font"/>; color: <xsl:value-of select="position_font_color"/>; font-weight: <xsl:value-of select="position_font_weight"/>; font-style: <xsl:value-of select="position_font_style"/>; font-size: <xsl:value-of select="position_font_size"/>px;</xsl:attribute>
-                    <xsl:value-of select="position_divider"/>
+                    1</span>
+                    <span><xsl:attribute name="style">font-family: <xsl:value-of select="position_font"/>; color: <xsl:value-of select="position_font_color"/>; font-weight: <xsl:value-of select="position_font_weight"/>; font-style: <xsl:value-of select="position_font_style"/>; font-size: <xsl:value-of select="position_font_size"/>px;</xsl:attribute><xsl:value-of select="position_divider"/>
                 </span>
                 <xsl:if test="total_slides_show='yes'"><span>
                     <xsl:attribute name="id"><xsl:value-of select="$objectID"/>_position_total</xsl:attribute>

@@ -61,7 +61,7 @@
                 oCurObj.setAttribute("total","");
                 AddEvtHandler("EVENT_SLIDE_OPENED", "nav_position_advanced", argobj.pid);
                 return true;
-            }                                                                                                                                                                                                                                                                                                         ]]>
+            }                                                                                                                                                                                                                                                                                                                                                                                                 ]]>
         </body>
       </method>
       <method name="HandleEvt" label="HandleEvt" access="private">
@@ -136,13 +136,13 @@
                             lss == true ? sCurrent = String(parseInt(sTotal)-iCurrent) : sCurrent = iCurrent.toString();
                             oCurObj.setAttribute("num", sCurrent);
                             oCurObj.setAttribute("total",sTotal);
-                            document.getElementById(oEvtHandler.sTargetId + "_position_current").innerHTML = sCurrent + " ";
+                            document.getElementById(oEvtHandler.sTargetId + "_position_current").innerHTML = sCurrent;
                         }
                         break;
                     }
                 }
                 return true;
-            }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ]]>
+            }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ]]>
         </body>
       </method>
       <method name="GetProperty" label="GetProperty" access="private">
@@ -161,7 +161,7 @@
                     default: return true;
                 }
                 return true;
-            }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ]]>
+            }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ]]>
         </body>
       </method>
     </methods>
