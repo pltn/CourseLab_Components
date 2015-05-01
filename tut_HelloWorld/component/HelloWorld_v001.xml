@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+'*    HelloWorld_v001.xml
+-->
+<params>
+  <object>
+    <format>2.0</format>
+    <label>Hello World!</label>
+    <description>HelloWorld...</description>
+    <width>320</width>
+    <height>240</height>
+  </object>
+  <page name="General" w="220" h="180">
+    <param type="label" id="" text="SampleValue:" def="" x="5" y="7" w="60" h="11"/>
+    <param type="edit" id="ExampleValue" text="мир" def="мир" x="67" y="5" w="138" h="13"/>
+  </page>
+</params>
